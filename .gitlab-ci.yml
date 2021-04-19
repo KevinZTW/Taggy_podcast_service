@@ -9,16 +9,16 @@ before_script:
 #  - mkdir -p ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}
 
 stages:
-  - test
+#  - test
   - build
   - deploy
 
-gotest:
-  image:  golang:alpine
-  stage: test
-  script:
-    - go version
-    - go test ./...
+#gotest:
+#  image:  golang:alpine
+#  stage: test
+#  script:
+#    - go version
+#    - go test ./...
 
 
 gobuild_n_push_image:
