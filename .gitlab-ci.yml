@@ -1,22 +1,23 @@
-image:  golang:alpine
+
 
 variables:
 #  ARTIFACTS_DIR: artifacts
   GO_PROJECT: gitlab.com/KevinZTW/taggy
 
 before_script:
-  - go version
   - export GO111MODULE=on
 #  - mkdir -p ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}
 
 stages:
-  - build
   - test
+  - build
   - deploy
 
 gotest:
+  image:  golang:alpine
   stage: test
   script:
+    - go version
     - go test ./...
 
 
