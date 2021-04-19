@@ -1,13 +1,13 @@
-image: golang:latest
+image:  golang:alpine
 
 variables:
-  ARTIFACTS_DIR: artifacts
+#  ARTIFACTS_DIR: artifacts
   GO_PROJECT: gitlab.com/KevinZTW/taggy
 
 before_script:
   - go version
   - export GO111MODULE=on
-  - mkdir -p ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}
+#  - mkdir -p ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}
 
 stages:
   - build
@@ -19,11 +19,20 @@ gotest:
     - go test ./...
 
 
-gobuild:
+gobuild_n_push_image:
   stage: build
   script:
-    - go build -o  ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}/main
-  artifacts:
-    paths:
-      - ${ARTIFACTS_DIR}
-    expire_in: 1h
+    script:
+      - docker build -t registry.gitlab.com/KevinZTW/taggy:$CI_COMMIT_SHORT_SHA .
+      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+      - docker push registry.gitlab.com/KevinZTW/taggy:$CI_COMMIT_SHORT_SHA
+#      - docker build -t registry.gitlab.com/cpay2019/cpay-core_service:latest .
+#      - docker push registry.gitlab.com/cpay2019/cpay-core_service:latest
+
+
+
+#    - go build -o  ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}/main
+#  artifacts:
+#    paths:
+#      - ${ARTIFACTS_DIR}
+#    expire_in: 1h
