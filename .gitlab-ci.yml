@@ -21,7 +21,7 @@ gotest:
 
 gobuild_n_push_image:
   stage: build
-
+  image: gitlab/dind
   script:
       - docker build -t registry.gitlab.com/KevinZTW/taggy:$CI_COMMIT_SHORT_SHA .
       - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
